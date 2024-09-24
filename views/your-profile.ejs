@@ -1,0 +1,54 @@
+<style>
+    .user-profile {
+      display: flex;
+      max-width: 201px;
+      gap: 40px 68px;
+      font-family: Inter, sans-serif;
+      font-weight: 400;
+      text-align: right;
+    }
+    
+    .user-info {
+      display: flex;
+      flex-direction: column;
+    }
+    
+    .user-name {
+      color: rgba(13, 6, 45, 1);
+      font-size: 16px;
+    }
+    
+    .user-location {
+      color: rgba(120, 116, 134, 1);
+      font-size: 14px;
+      align-self: flex-end;
+    }
+    
+    .user-avatar {
+      aspect-ratio: 1;
+      object-fit: contain;
+      object-position: center;
+      width: 18px;
+      margin: auto 0;
+    }
+    
+    .visually-hidden {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
+</style>
+
+<section class="user-profile">
+    <div class="user-info">
+        <h2 class="user-name"><%= userName %></h2>
+        <p class="user-location"><%= userLocation %></p>
+    </div>
+    <img loading="lazy" src="<%= userAvatarUrl %>" class="user-avatar" alt="<%= userName %>'s profile picture" />
+</section>

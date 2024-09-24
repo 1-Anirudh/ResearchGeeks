@@ -54,6 +54,8 @@ app.get('/login', (req, res) => {
 // Handle login form submission
 app.post('/login', async (req, res) => {
     const { email, password } = req.body;
+    console.log("email", email);
+    console.log("password", password);
     try {
         const userCredential = await signInUser(email, password);
         req.session.loginSuccess = true;
@@ -67,10 +69,18 @@ app.post('/login', async (req, res) => {
 // Serve the home page
 app.get('/', (req, res) => {
     if (req.session.loginSuccess) {
-        res.render('home');
+        res.render('home', { 
+            logoName: 'CodingLab', 
+            profileName: 'Prem Shahi', 
+            jobTitle: 'Web Designer'
+        });
     } else {
         res.render('index');
     }
+});
+
+app.get('/search', (req, res) => {
+    res.render('search');
 });
 
 // Serve the feedback form
@@ -128,6 +138,8 @@ app.get('/profile', (req, res) => {
     res.render('profile');
 });
 
+
+
 // Fetch interests
 app.get('/fetch-interests', async (req, res) => {
     if (!req.session.uid) {
@@ -162,6 +174,16 @@ app.get('/fetch-skills', async (req, res) => {
         console.error('Error fetching skills:', error);
         res.status(500).json({ error: 'Failed to fetch skills' });
     }
+});
+
+app.get('/logout', (req, res) => {
+    req.session.destroy((err) => {
+        if (err) {
+            console.error('Error destroying session:', err);
+            return res.redirect('/home');
+        }
+        res.redirect('/login'); // Redirect to login or home page after logout
+    });
 });
 
 app.listen(PORT, () => {
