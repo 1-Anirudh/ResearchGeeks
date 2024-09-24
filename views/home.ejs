@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <style>
+        .custom-floating-btn {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 80px;
+            height: 30px;
+            background-color: #2f91d3;
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            transition: background-color 0.3s;
+        }
+        .custom-floating-btn:hover {
+            background-color: #1c6ea4;
+        }
+        .custom-floating-btn i {
+            font-size: 18px;
+        }
+        .profile-btn {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Welcome Back!</h1>
+        <p>You are now logged in.</p>
+        <form action="/search" method="post">
+            <div class="input-field">
+                <label for="searchTerm">Enter search term:</label>
+                <input type="text" id="searchTerm" name="searchTerm" required>
+            </div>
+            <button type="submit" class="btn">Search</button>
+        </form>
+    </div>
+    <a href="/feedback" class="custom-floating-btn">
+        <i class="material-icons">feedback</i>
+    </a>
+    <a href="/profile" class="btn waves-effect waves-light profile-btn">Your Profile</a>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+</body>
+</html>

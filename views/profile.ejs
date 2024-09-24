@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile</title>
+    <script>
+        async function fetchData(type) {
+            try {
+                const response = await fetch(`/fetch-${type}`);
+                const data = await response.json();
+                document.getElementById(`${type}-list`).innerHTML = data.map(item => `<li>${item}</li>`).join('');
+            } catch (error) {
+                console.error(`Error fetching ${type}:`, error);
+            }
+        }
+    </script>
+</head>
+<body>
+    <h1>Profile</h1>
+    <div>
+        <h2>Interests</h2>
+        <button onclick="fetchData('interests')">Load Interests</button>
+        <ul id="interests-list"></ul>
+    </div>
+    <div>
+        <h2>Skills</h2>
+        <button onclick="fetchData('skills')">Load Skills</button>
+        <ul id="skills-list"></ul>
+    </div>
+</body>
+</html>

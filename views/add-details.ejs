@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Your Details</title>
+    <!-- Include Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .remove-btn {
+            margin-left: 10px;
+            cursor: pointer;
+            color: red;
+        }
+        .badge-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        .badge {
+            display: flex;
+            align-items: center;
+            padding: 0.5em 1em;
+            font-size: 1em;
+        }
+        .badge .remove-btn {
+            margin-left: 5px;
+            cursor: pointer;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <div class="container mt-5">
+        <h1 class="mb-4">Add Your Details</h1>
+        <form action="/save-details" method="post">
+            <div id="interests-container" class="form-group">
+                <label for="interests">Interests:</label>
+                <div class="input-group mb-3">
+                    <input type="text" id="interest-input" class="form-control">
+                    <div class="input-group-append">
+                        <button type="button" class="btn btn-primary" onclick="addInterest()">Add</button>
+                    </div>
+                </div>
+                <div id="interests-badge-container" class="badge-container"></div>
+            </div>
+
+            <div id="skills-container" class="form-group">
+                <label for="skills">Skills:</label>
+                <div class="input-group mb-3">
+                    <input type="text" id="skill-input" class="form-control">
+                    <div class="input-group-append">
+                        <button type="button" class="btn btn-primary" onclick="addSkill()">Add</button>
+                    </div>
+                </div>
+                <div id="skills-badge-container" class="badge-container"></div>
+            </div>
+
+            <input type="submit" class="btn btn-success" value="Save">
+        </form>
+    </div>
+
+    <script>
+        function addInterest() {
+            const input = document.getElementById('interest-input');
+            const value = input.value.trim();
+            if (value) {
+                const container = document.getElementById('interests-badge-container');
+                const badge = document.createElement('span');
+                badge.className = 'badge badge-primary';
+                badge.innerHTML = `${value} <span class="remove-btn" onclick="removeBadge(this)">&times;</span>`;
+                container.appendChild(badge);
+
+                // Add hidden input to form
+                const hiddenInput = document.createElement('input');
+                hiddenInput.type = 'hidden';
+                hiddenInput.name = 'interests[]';
+                hiddenInput.value = value;
+                container.appendChild(hiddenInput);
+
+                input.value = '';
+            }
+        }
+
+        function addSkill() {
+            const input = document.getElementById('skill-input');
+            const value = input.value.trim();
+            if (value) {
+                const container = document.getElementById('skills-badge-container');
+                const badge = document.createElement('span');
+                badge.className = 'badge badge-primary';
+                badge.innerHTML = `${value} <span class="remove-btn" onclick="removeBadge(this)">&times;</span>`;
+                container.appendChild(badge);
+
+                // Add hidden input to form
+                const hiddenInput = document.createElement('input');
+                hiddenInput.type = 'hidden';
+                hiddenInput.name = 'skills[]';
+                hiddenInput.value = value;
+                container.appendChild(hiddenInput);
+
+                input.value = '';
+            }
+        }
+
+        function removeBadge(element) {
+            const badge = element.parentElement;
+            const container = badge.parentElement;
+            const hiddenInput = Array.from(container.querySelectorAll('input')).find(input => input.value === badge.textContent.trim());
+            if (hiddenInput) {
+                hiddenInput.remove();
+            }
+            badge.remove();
+        }
+    </script>
+    <!-- Include Bootstrap JS and dependencies -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
