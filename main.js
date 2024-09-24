@@ -90,9 +90,12 @@ app.get('/feedback', (req, res) => {
 
 // Handle feedback form submission
 app.post('/feedback', async (req, res) => {
-    const { feedback } = req.body;
+    const { score, feedback } = req.body;
+    console.log("score", score);
+    console.log("feedback", feedback);
+    // console.log("feedback", feedback.comment);
     try {
-        await submitFeedback(feedback);
+        await submitFeedback(score, feedback);
         res.send('Thank you for your feedback!');
     } catch (error) {
         res.send(`Error submitting feedback: ${error.message}`);
