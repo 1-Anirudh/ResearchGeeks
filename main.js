@@ -28,11 +28,6 @@ app.use(session({
     cookie: { secure: false } // Set to true if using HTTPS
 }));
 
-// Serve the registration form
-app.get('/register', (req, res) => {
-    res.render('register');
-});
-
 // Handle registration form submission
 app.post('/register', async (req, res) => {
     const { email, password } = req.body;
@@ -48,7 +43,7 @@ app.post('/register', async (req, res) => {
 
 // Serve the login form
 app.get('/login', (req, res) => {
-    res.render('login');
+    res.redirect('/');
 });
 
 // Handle login form submission
@@ -62,7 +57,11 @@ app.post('/login', async (req, res) => {
         req.session.uid = userCredential.user.uid; // Store the user's UID in the session
         res.redirect('/');
     } catch (error) {
-        res.send(`Login failed: ${error.message}`);
+        res.send(`<p>Login failed: ${error.message}</p>
+            <script>
+            setTimeout(function() {
+                window.location.href = '/';
+            }, 1000);`);
     }
 });
 
@@ -70,9 +69,9 @@ app.post('/login', async (req, res) => {
 app.get('/', (req, res) => {
     if (req.session.loginSuccess) {
         res.render('home', { 
-            logoName: 'CodingLab', 
-            profileName: 'Prem Shahi', 
-            jobTitle: 'Web Designer'
+            logoName: 'EurekaTribe', 
+            profileName: req.session.name || 'User', 
+            jobTitle: 'Student'
         });
     } else {
         res.render('index');
@@ -93,12 +92,22 @@ app.post('/feedback', async (req, res) => {
     const { score, feedback } = req.body;
     console.log("score", score);
     console.log("feedback", feedback);
-    // console.log("feedback", feedback.comment);
     try {
         await submitFeedback(score, feedback);
-        res.send('Thank you for your feedback!');
+        res.send(`
+            <p>Thankyou for the feedback !!</p>
+            <script>
+                setTimeout(function() {
+                    window.location.href = '/';
+                }, 1000);
+            </script>
+        `);
     } catch (error) {
-        res.send(`Error submitting feedback: ${error.message}`);
+        res.send(`<p>Error submitting feedback: ${error.message} try later </p>
+            <script>
+            setTimeout(function() {
+                window.location.href = '/';
+            }, 1000);`);
     }
 });
 
@@ -107,19 +116,21 @@ app.get('/add-details', (req, res) => {
     if (req.session.loginSuccess) {
         res.render('add-details');
     } else {
-        res.redirect('/login');
+        res.redirect('/');
     }
 });
 
 // Handle saving details
 app.post('/save-details', async (req, res) => {
-    const { interests, skills } = req.body;
+    const { name, interests, skills } = req.body;
+    req.session.name = name;
+    console.log(req.body);
     const uid = req.session.uid; // Get the user's UID from the session
     if (!uid) {
         return res.send('Error: User not logged in.');
     }
     try {
-        await saveUserDetails(uid, interests, skills);
+        await saveUserDetails(uid, name, interests, skills);
         res.send(`
             <p>Details saved successfully!</p>
             <script>
@@ -129,7 +140,11 @@ app.post('/save-details', async (req, res) => {
             </script>
         `);
     } catch (error) {
-        res.send(`Error saving details: ${error.message}`);
+        res.send(`<p>Error saving details: ${error.message}, you later add as well</p>
+            <script>
+            setTimeout(function() {
+                window.location.href = '/';
+            }, 1000);`);
     }
 });
 
@@ -183,9 +198,9 @@ app.get('/logout', (req, res) => {
     req.session.destroy((err) => {
         if (err) {
             console.error('Error destroying session:', err);
-            return res.redirect('/home');
+            return res.redirect('/');
         }
-        res.redirect('/login'); // Redirect to login or home page after logout
+        res.redirect('/'); // Redirect to login or home page after logout
     });
 });
 
